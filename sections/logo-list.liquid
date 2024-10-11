@@ -1,0 +1,297 @@
+{{ 'ap-logolist.css' | asset_url | stylesheet_tag }}
+
+<style>
+    #shopify-section-{{ section.id }} {
+        --heading-color: {{ section.settings.heading_color | color_extract: 'red' }}, {{ section.settings.heading_color | color_extract: 'green' }}, {{ section.settings.heading_color | color_extract: 'blue' }};
+        --color-body: {{ section.settings.text_color | color_extract: 'red' }}, {{ section.settings.text_color | color_extract: 'green' }}, {{ section.settings.text_color | color_extract: 'blue' }};
+      --primary-button-background: 244, 165, 28;
+      --primary-button-text-color: 255, 255, 255;
+  
+      --ap-nextap-buttonprev-background: 255, 255, 255;
+      --ap-nextap-buttonprev-color: 40, 40, 40;
+  
+      --section-background: {{ section.settings.section_background | color_extract: 'red' }}, {{ section.settings.section_background | color_extract: 'green' }}, {{ section.settings.section_background | color_extract: 'blue' }};
+      --section-logo-background: 0 0 0 / 0.0;
+      --section-logo-count: {{ section.settings.number_column }};
+    }
+
+   @media(max-width: 768px){
+  .newbtnh .button--primary {
+    background: #590595;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+ /* .section__header {
+    margin-bottom: 0px;
+} */
+   }
+    @media(min-width: 768px){
+    .section_logo {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  
+  }
+  .newbtnh .button--primary {
+    background: #590595;
+}
+  </style>
+  
+<section class="section ">
+    <div class="section__color-wrapper section_logo" style="background: {{ section.settings.gradient_accent_2 }}">
+        <div class="container ">
+            {% if section.settings.heading != blank or section.settings.heading_2 != blank %}
+                <header class="section__header container text-container">
+                    {% if section.settings.heading != blank %}
+                        <h2 class="heading h{{ section.settings.heading_size_range }}">{{ section.settings.heading }}</h2>
+                    {% endif %}
+                    {% if section.settings.heading_2 != blank %}
+                        <h3 class="heading h{{ section.settings.heading_2_size_range }}">{{ section.settings.heading_2 }}</h3>
+                    {% endif %}
+                    {% if section.settings.description != blank %}
+                        <div class="heading {{ section.settings.description_size }}">
+                        {{ section.settings.description }}
+                        </div>
+                    {% endif %} 
+                     
+                     <div class="button-wrapper newbtnh ">
+                          <a href="{{ section.settings.link }}" class="button {% if section.settings.button_inline %} button_inline{% else %} button--primary{% endif %} button_icon">{{ section.settings.read_more }}
+                            {%- if section.settings.icon_button -%}
+                            <span class="button-withicon">{%- render 'icon-arrow' -%}</span>
+                            {%- endif-%}
+                          </a>
+                      </div>
+                  
+                </header>
+            {% endif %}
+              <div class="scroller">
+                <div class="scroller__inner">
+                    <ap-logolist reveal-on-scroll="" class="ap-logolist ap-logolist--{{ section.settings.box_style }} ap-logolist--carousel ap-object-loaded" style="opacity: 1;">
+                        <div class="ap-logolist__list">
+                          {% for block in section.blocks %}
+                            {% if block.settings.image != blank %}
+                                  <div class="ap-logolist__item">
+                                          <img loading="lazy" sizes="200px" class="ap-logolist__image"
+                                            alt="" 
+                                            src="{{ block.settings.image | image_url: block.settings.image.width }}" 
+                                            srcset="{{ block.settings.image | image_url: width: 200 }} 200w, {{ block.settings.image | image_url: width: 300 }} 300w, {{ block.settings.image | image_url: width: 400 }} 400w" 
+                                            width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">
+                                  </div>
+                            {% else %}
+                                        <div class="ap-logolist__image">
+                                            {{ 'image' | placeholder_svg_tag }}
+                                        </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </ap-logolist>
+                  </div>
+                </div>
+            </div>
+        </div>
+   
+    <span class="container" style="display:block; background: #E4E6E8;border-radius: 36px;height: 2px;"></span>
+</section>
+  
+  
+
+{% schema %}
+{
+  "name": "Logo List",
+  "tag": "section",
+  "class": "shopify-section--ap-logolist",
+  "settings": [
+    {
+      "type": "select",
+      "id": "box_style",
+      "options": [
+        {
+          "value": "border",
+          "label": "Border"
+        },
+        {
+          "value": "none",
+          "label": "None"
+        }
+      ],
+      "default": "none",
+      "label": "Box Style"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "default": "#ffffff",
+      "label": "t:sections.all.section_background.label"
+    },
+    {
+        "id": "gradient_accent_2",
+        "type": "color_background",
+        "default":"linear-gradient(180deg, rgba(237, 238, 241, 1), rgba(237, 238, 241, 0) 100%)",
+        "label": "Gradient color"
+      },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "default": "#282828",
+      "label": "t:sections.all.heading_color.label"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "t:sections.all.button_background.label"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "default": "#405DE6",
+      "label": "t:sections.all.button_text_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#282828",
+      "label": "t:sections.all.text_color.label"
+    },
+    {
+      "type": "range",
+      "id": "number_column",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "label": "t:sections.all.number_column.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.heading.label"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.all.heading_size_range.label"
+    },
+    {
+      "type": "text",
+      "id": "heading_2",
+      "label": "t:sections.all.heading_2.label"
+    },
+    {
+      "type": "range",
+      "id": "heading_2_size_range",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "t:sections.all.heading_2_size_range.label"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "t:sections.all.description.label"
+    },
+    {
+      "type": "select",
+      "id": "description_size",
+      "options": [
+        {
+          "value": "heading--xxsmall",
+          "label": "t:sections.all.description_size.options__1.label"
+        },
+        {
+          "value": "heading--xsmall",
+          "label": "t:sections.all.description_size.options__2.label"
+        },
+        {
+          "value": "heading--small",
+          "label": "t:sections.all.description_size.options__3.label"
+        },
+        {
+          "value": "",
+          "label": "t:sections.all.description_size.options__4.label"
+        },
+        {
+          "value": "heading--large",
+          "label": "t:sections.all.description_size.options__5.label"
+        }
+      ],
+      "default": "heading--xsmall",
+      "label": "t:sections.all.description_size.label"
+    },
+     {
+          "type": "text",
+          "id": "read_more",
+          "label": "t:sections.all.read_more.label",
+          "default": "Read more"
+        },
+        {
+          "type": "checkbox",
+          "id": "icon_button",
+          "label":"Enable icon",
+          "default": false
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.all.link.label"
+        },
+     {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all.image.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo list",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

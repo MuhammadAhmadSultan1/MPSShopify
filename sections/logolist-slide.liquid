@@ -1,0 +1,172 @@
+
+
+<ap-logolist class="Marquee" style="background: {{ section.settings.gradient_accent_2 }};">
+  <div class="Marquee-content">
+    {% for block in section.blocks %}
+    <div class="Marquee-tag" data-speed="{{ section.settings.speed }}">
+      {%- if block.settings.image != blank -%}
+                  {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
+                    {% assign spaced_image = true %}
+                  {% endif %}
+                  <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} image-card-spacing{% endif %}">
+                    <div class="media media--transparent media--{{ section.settings.image_ratio }}"{% if section.settings.image_ratio == 'adapt' %}style="padding-bottom: {{ 1 | divided_by: highest_ratio | times: 100 }}%;"{% endif %}>
+                      {%- capture sizes -%}(min-width: 990px)
+                        {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %}, (min-width: 750px)
+                        {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %}, calc(100vw - 30px){%- endcapture -%}
+                      {{ block.settings.image | image_url: width: 1420 | image_tag: 
+                      loading: 'lazy',
+                      sizes: sizes,
+                      widths: '275, 550, 710, 1420',
+                      class: 'multicolumn-card__image' }}
+                    </div>
+                  </div>
+                {%- endif -%}
+                <div class="text-with-icons__content-wrapper">
+                  <a class="heading {{ block.settings.heading_size }} title-icon title-logo" {% if block.settings.link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.link }}"{% endif %} style="font-size: 17px;">{{ block.settings.heading }}</a>
+                </div>
+    </div>
+    {% endfor %}
+  </div>
+</ap-logolist>
+
+<style>
+.Marquee {
+  margin: 2rem 0;
+width: 100vw;
+box-sizing: border-box;
+padding: 1em;
+color: white;
+font-weight: 200;
+display: flex;
+align-items: center;
+overflow: hidden;
+}
+
+.Marquee-content {
+display: flex;
+animation: marquee 20s linear infinite running;
+}
+
+.Marquee-content:hover {
+animation-play-state: paused;
+}
+
+.Marquee-tag {
+width: 200px;
+margin: 0 .5em;
+padding: .5em;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: all .2s ease;
+}
+
+.Marquee-tag:hover {
+color: var(--primary);
+transform: scale(1.1);
+cursor: pointer;
+}
+.Marquee-tag:hover a{
+  color:var(--primary);
+}
+
+@keyframes marquee {
+0% {
+transform: translateX(0);
+}
+100% {
+transform: translate(-50%);
+}
+}
+</style>
+
+
+{% schema %}
+  {
+    "name": "Text Blocks",
+    "settings": [
+      {
+        "id": "gradient_accent_2",
+        "type": "color_background",
+        "default":"linear-gradient(270deg, rgba(248, 230, 234, 1), rgba(229, 247, 250, 1) 100%)",
+        "label": "Gradient color"
+      },
+      {
+            "type": "range",
+            "id": "speed",
+            "label": "Scroll Speed (ms)",
+            "default": 50,
+            "min": 10,
+            "max": 200,
+            "step": 10
+          }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Text Blocks",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "t:sections.multicolumn.blocks.column.settings.image.label"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Text sample",
+            "label": "t:sections.all.heading.label"
+          }, 
+          {
+            "type": "select",
+            "id": "heading_size",
+            "options": [
+              {
+                "value": "heading--xxsmall",
+                "label": "t:sections.all.heading_size.options__1.label"
+              },
+              {
+                "value": "heading--xsmall",
+                "label": "t:sections.all.heading_size.options__2.label"
+              },
+              {
+                "value": "heading--small",
+                "label": "t:sections.all.heading_size.options__3.label"
+              },
+              {
+                "value": "",
+                "label": "t:sections.all.heading_size.options__4.label"
+              }, {
+                "value": "heading--large",
+                "label": "t:sections.all.heading_size.options__5.label"
+              }
+            ],
+            "default": "heading--small",
+            "label": "t:sections.all.heading_size.label"
+          },
+          {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.multicolumn.blocks.column.settings.link.label"
+        }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Slider logo list",
+        "blocks": [
+          {
+            "type": "text"
+          }, {
+            "type": "text"
+          }, {
+            "type": "text"
+          }, {
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

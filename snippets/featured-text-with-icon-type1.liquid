@@ -1,0 +1,90 @@
+<div class="section__color-wrapper">
+  <div class="container">
+    {% if section.settings.heading %}
+    <div class="content_textwithicon" style="text-align:center;margin-bottom:3rem">
+      {% if section.settings.caption != blank %}
+        <h2 class="heading heading--small" style="color: var(--primary);">{{ section.settings.caption }}</h2>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h3 class="heading h{{ section.settings.heading_size_range }}" style="line-height:3rem">{{ section.settings.heading }}</h3>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p class="">{{ section.settings.description }}</p>
+      {% endif %}
+    </div>
+    {% endif %}
+<ap-carousel class="text-with-icons">
+        <div class="text-with-icons__list hide-scrollbar">
+          {% for block in section.blocks %}
+            <ap-carousel-item
+              id="block-{{ block.id }}"
+          class="text-with-icons__item text-with-icons__item--{{ section.settings.content_layout }} {% if section.settings.border_box == true %}border_box{% endif %} {% if section.settings.show_button_arrow == true %}content-with-arrow{% endif %}"
+              {% if forloop.index != 1 %}hidden=""{% endif %}>
+              <div class="text-with-icons__icon-wrapper">
+                {% if block.settings.custom_icon != blank %}
+                  {{ block.settings.custom_icon }}
+                {% else %}
+                  {% render 'icons', svg_icon: block.settings.svg_icon %}
+                {% endif %}
+              </div>
+              {%- if block.settings.image != blank -%}
+                {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
+                  {% assign spaced_image = true %}
+                {% endif %}
+                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} image-card-spacing{% endif %}">
+                  
+                <div class="media media--transparent media--{{ section.settings.image_ratio }}"{% if section.settings.image_ratio == 'adapt' %}style="padding-bottom: {{ 1 | divided_by: highest_ratio | times: 100 }}%;"{% endif %}>
+                    {%- capture sizes -%}(min-width: 990px)
+                      {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %}, (min-width: 750px)
+                      {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %}, calc(100vw - 30px){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1420 | image_tag: 
+                     loading: 'lazy',
+                     sizes: sizes,
+                     widths: '275, 550, 710, 1420',
+                     class: 'multicolumn-card__image',
+                     style: 'width:auto;' }}
+                  </div>
+                </div>
+              {%- endif -%}
+              <div class="text-with-icons__content-wrapper">
+                {%- if block.settings.heading != blank -%}
+                <p class="heading {{ block.settings.heading_size }}" style="font-size: 18px;">{{ block.settings.heading }}</p>
+              {%- endif -%}
+                <p class="description-icon">{{ block.settings.content }}</p>
+              </div>
+            </ap-carousel-item>
+            {% comment %} {%- if section.settings.show_button_arrow -%}
+              <div class="arrow-step">
+                <svg
+                  width="90"
+                  height="26"
+                  viewBox="0 0 90 26"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 13C6 14.6569 4.65685 16 3 16C1.34315 16 0 14.6569 0 13C0 11.3431 1.34315 10 3 10C4.65685 10 6 11.3431 6 13Z" fill="#DBDDE3" />
+                  <path d="M22 13C22 14.6569 20.6569 16 19 16C17.3431 16 16 14.6569 16 13C16 11.3431 17.3431 10 19 10C20.6569 10 22 11.3431 22 13Z" fill="#DBDDE3" />
+                  <path d="M38 13C38 14.6569 36.6569 16 35 16C33.3431 16 32 14.6569 32 13C32 11.3431 33.3431 10 35 10C36.6569 10 38 11.3431 38 13Z" fill="#DBDDE3" />
+                  <path d="M54 13C54 14.6569 52.6569 16 51 16C49.3431 16 48 14.6569 48 13C48 11.3431 49.3431 10 51 10C52.6569 10 54 11.3431 54 13Z" fill="#DBDDE3" />
+                  <circle
+                    cx="77"
+                    cy="13"
+                    r="12.25"
+                    stroke="#DBDDE3"
+                    stroke-width="1.5" />
+                  <path d="M81 13L75 17L75 9L81 13Z" fill="#7000FE" />
+                </svg>
+              </div>
+            {%- endif -%} {% endcomment %}
+          {% endfor %}
+        </div>
+        <ap-pagedots class="text-with-icons__dots dots-nav dots-nav--centered hd-lap-and-up">
+          {% for block in section.blocks %}
+            <button class="dots-nav__item tap-area" {% if forloop.index == 1 %}ap-currentaria="true{% else %}ap-currentaria="false"{% endif %}">
+              <span class="visually-hidden">Go to slide {{ forloop.index }}</span>
+            </button>
+          {% endfor %}
+        </ap-pagedots>
+      </ap-carousel>
+
+      </div>
+      </div>

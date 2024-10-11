@@ -1,0 +1,30 @@
+
+@font-face {
+        font-family: 'Mont-Regular';
+        src: local('☺'), url('https://cdn.shopify.com/s/files/1/0729/8305/2572/files/Mont-Regular.woff?v=1679972547') format('woff'),
+        local('☺'), url('https://cdn.shopify.com/s/files/1/0729/8305/2572/files/Mont-Regular.woff2?v=1679972547') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display:swap;
+    }
+
+
+
+
+@font-face {
+        font-family: 'Mont-Bold';
+        src: local('☺'), url('https://cdn.shopify.com/s/files/1/0729/8305/2572/files/Mont-Bold.woff?v=1679972535') format('woff'),
+        local('☺'), url('https://cdn.shopify.com/s/files/1/0729/8305/2572/files/Mont-Bold.woff2?v=1679972535') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display:swap;
+    }
+
+
+:root {
+    --hd-font-family: ;
+    --body-font-family: Mont-Regular;
+
+    --g-font-other: Mont-Bold;
+}
+

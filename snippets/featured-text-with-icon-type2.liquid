@@ -1,0 +1,139 @@
+<style>
+  .container_textwithicon--content{
+    width: 50%;
+  }
+</style>
+<div class="text-with-icon_background">
+  <div class="section__color-wrapper ">
+  <div class="container ">
+    <div class="content_textwithicon" style="text-align:center;margin-bottom:3rem">
+      {% if section.settings.caption != blank %}
+        <h2 class="heading heading--small" style="color: var(--primary);">{{ section.settings.caption }}</h2>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h3 class="heading h{{ section.settings.heading_size_range }}" style="line-height:3rem">{{ section.settings.heading }}</h3>
+      {% endif %}
+      {% if section.settings.description != blank %}
+        <p class="">{{ section.settings.description }}</p>
+      {% endif %}
+    </div> 
+
+
+
+<div class="container_textwithicon">
+    <ap-imagewithtext class="container_textwithicon--content" reveal-on-scroll="" class="{{ _class }}" >
+        <div class="container">
+          <div>
+            <div class="ap-imagewithtext__image-wrapper">
+              {% for block in section.blocks %}
+                {% if section.settings.image != blank %}
+                  {%- capture sizes -%}(min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2){%- endcapture -%}
+                  <img id="{{ section.id }}" class="ap-imagewithtext__image" ap-revealvisibility="" 
+                    sizes: sizes loading="lazy" alt="{{ section.settings.heading_2 }}" 
+                    src="{{ section.settings.image | image_url: width: section.settings.image.width }}" 
+                    srcset="
+                      {%- if section.settings.image.width >= 165 -%}{{ section.settings.image | image_url: width: 165 }} 165w,{%- endif -%}
+                      {%- if section.settings.image.width >= 360 -%}{{ section.settings.image | image_url: width: 360 }} 360w,{%- endif -%}
+                      {%- if section.settings.image.width >= 533 -%}{{ section.settings.image | image_url: width: 533 }} 533w,{%- endif -%}
+                      {%- if section.settings.image.width >= 720 -%}{{ section.settings.image | image_url: width: 720 }} 720w,{%- endif -%}
+                      {%- if section.settings.image.width >= 940 -%}{{ section.settings.image | image_url: width: 940 }} 940w,{%- endif -%}
+                      {%- if section.settings.image.width >= 1066 -%}{{ section.settings.image | image_url: width: 1066 }} 1066w,{%- endif -%}
+                      {{ section.settings.image | image_url }} {{ section.settings.image.width }}w
+                    "
+                    {% if forloop.index != 1 %} hidden="" {% endif %}
+                    width="{{ section.settings.image.width }}" height="{{ section.settings.image.width }}">
+                {% comment %} {% else %}
+                  <div id="{{ section.id }}" class="ap-imagewithtext__image" ap-revealvisibility="" style="background:#fff">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div> {% endcomment %}
+                {% endif %} 
+              {% endfor %}
+            </div>
+  
+            <div class="ap-imagewithtext__content-wrapper" style="margin-top:3rem">
+              <div class="ap-imagewithtext__content-list">
+                {% for block in section.blocks %}
+                  <ap-imagewithtext-item attached-image="{{ section.id }}" class="ap-imagewithtext__content text-container content_textwithicon" {% if forloop.index != 1 %} hidden="" {% endif %}>
+                    <h2 class="heading {{ section.settings.heading1_size }}" style="color:var(--primary)">
+                      {{ section.settings.heading_1 }}
+                    </h2>
+                    {% if section.settings.heading_2 != blank %}
+                      <h3 class="heading h{{ section.settings.heading_size_range }}" style="line-height:3rem">{{ section.settings.heading_2 }}</h3>
+                    {% endif %}
+                    <div class="ap-imagewithtext__text-wrapper"  style="margin-bottom: 3rem">
+                      {{ section.settings.text }}
+                    </div>
+                    {% if section.settings.button_label != blank %}
+                              <a href="{{ section.settings.link1 }}" class="button button--primary button_icon">{{ section.settings.button_label }}
+                                <span class="button-withicon">{%- render 'icon-arrow' -%}</span>
+                              </a>
+                              
+                            {% endif %}
+                  </ap-imagewithtext-item>
+                {% endfor %}
+              </div>
+              {% comment %} <ap-pagedots animation-timer="" class="ap-imagewithtext__navigation">
+                {% for block in section.blocks %}
+                  <button type="button" class="ap-imagewithtext__navigation-item" ap-currentaria="{% if forloop.index != 1 %} false {% endif %}">
+                    <span class="heading {{ section.settings.navigation_size }}">{{ section.settings.navigation_text }}</span>
+                  </button>
+                {% endfor %}
+              </ap-pagedots> {% endcomment %}
+            </div>
+          </div>
+        </div>
+      </ap-imagewithtext>
+<ap-carousel class="text-with-icons">
+        <div class="text-with-icons__list hide-scrollbar">
+          {% for block in section.blocks %}
+            <ap-carousel-item
+              id="block-{{ block.id }}"
+              class="text-with-icons__item text-with-icons__item--{{ section.settings.content_layout }}"
+              style="text-align:left; min-height: 350px"
+              {% if forloop.index != 1 %}hidden=""{% endif %}>
+              <div class="text-with-icons__icon-wrapper">
+                {% if block.settings.custom_icon != blank %}
+                  {{ block.settings.custom_icon }}
+                {% else %}
+                  {% render 'icons', svg_icon: block.settings.svg_icon %}
+                {% endif %}
+              </div>
+              {% comment %} {%- if block.settings.image != blank -%}
+                {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
+                  {% assign spaced_image = true %}
+                {% endif %}
+                <div class="multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} image-card-spacing{% endif %}">
+                  <div class="media media--transparent media--{{ section.settings.image_ratio }}"{% if section.settings.image_ratio == 'adapt' %}style="padding-bottom: {{ 1 | divided_by: highest_ratio | times: 100 }}%;"{% endif %}>
+                    {%- capture sizes -%}(min-width: 990px)
+                      {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %}, (min-width: 750px)
+                      {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %}, calc(100vw - 30px){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1420 | image_tag: 
+                     loading: 'lazy',
+                     sizes: sizes,
+                     widths: '275, 550, 710, 1420',
+                     class: 'multicolumn-card__image' }}
+                  </div>
+                </div>
+              {%- endif -%} {% endcomment %}
+              <div class="text-with-icons__content-wrapper">
+                {%- if block.settings.heading != blank -%}
+                <p class="heading {{ block.settings.heading_size }} title-icon " style="font-size: 20px;">{{ block.settings.heading }}</p>
+                {%- endif -%}
+                <p class="description-icon">{{ block.settings.content }}</p>
+              </div>
+            </ap-carousel-item>
+          {% endfor %}
+        </div>
+        <ap-pagedots class="text-with-icons__dots dots-nav dots-nav--centered hd-lap-and-up">
+          {% for block in section.blocks %}
+            <button class="dots-nav__item tap-area" {% if forloop.index == 1 %}ap-currentaria="true{% else %}ap-currentaria="false"{% endif %}">
+              <span class="visually-hidden">Go to slide {{ forloop.index }}</span>
+            </button>
+          {% endfor %}
+        </ap-pagedots>
+      </ap-carousel>
+</div>
+
+  </div>
+</div>
+</div>
